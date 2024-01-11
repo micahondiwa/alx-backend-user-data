@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""filtered_logger module that implements data obfuscation"""
+"""filtered_logger module that implements data obfusation"""
 from typing import List
 import re
 import logging
@@ -23,7 +23,8 @@ def filter_datum(
     """
     for field in fields:
         message = re.sub(
-            field + "=.*?" + separator, field + "=" + redaction + separator, message
+            field + "=.*?" + separator, field + "=" +
+            redaction + separator, message
         )
     return message
 
