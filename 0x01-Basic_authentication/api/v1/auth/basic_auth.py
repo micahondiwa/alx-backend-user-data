@@ -21,12 +21,11 @@ class BasicAuth(Auth):
             - Base64 part of the Authorization header for basic authentication
         """
         if authorization_header:
-            if type(authorization_header) is not str:
+            if type(authorization_header) != str:
                 return None
             pattern = r"Basic (?P<token>.+)"
             if re.fullmatch(pattern, authorization_header.strip()):
-                return re.fullmatch(pattern, authorization_header
-                                    .strip()).group(
+                return re.fullmatch(pattern, authorization_header.strip()).group(
                     "token"
                 )
             return None
@@ -40,7 +39,7 @@ class BasicAuth(Auth):
             - Decoded value of a Base64 string base64_authorization_header
         """
         if base64_authorization_header:
-            if type(base64_authorization_header) is not str:
+            if type(base64_authorization_header) != str:
                 return None
             try:
                 res = b64decode(base64_authorization_header, validate=True)
@@ -57,12 +56,11 @@ class BasicAuth(Auth):
             - user email and password from the Base64 decoded value
         """
         if decoded_base64_authorization_header:
-            if type(decoded_base64_authorization_header) is not str:
+            if type(decoded_base64_authorization_header) != str:
                 return None, None
             if ":" in decoded_base64_authorization_header:
                 email = decoded_base64_authorization_header.split(":")[0]
-                password =
-                ecoded_base64_authorization_header[len(email) + 1:]
+                password = decoded_base64_authorization_header[len(email) + 1 :]
                 return email, password
             return None, None
         return None, None
@@ -74,7 +72,7 @@ class BasicAuth(Auth):
         Return:
             - User instance based on his email and password
         """
-        if type(user_email) is str and type(user_pwd) is str:
+        if type(user_email) == str and type(user_pwd) == str:
             try:
                 users = User.search({"email": user_email})
                 if not users or users == []:
