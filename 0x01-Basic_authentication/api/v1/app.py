@@ -8,7 +8,7 @@ from flask_cors import CORS
 from api.v1.views import app_views
 
 
-app = Flas(__name__)
+app = Flask(__name__)
 app.register_blueprint(app_views)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
@@ -34,7 +34,7 @@ def authenticate() -> None:
             "/api/v1/unauthorized/",
             "/api/v1/forbidden/",
         ]
-        if auth.reduce_auth(request.path, excluded_paths):
+        if auth.require_auth(request.path, excluded_paths):
             if auth.authorization_header(request) is None:
                 abort(401)
             if auth.current_user(request) is None:
@@ -49,7 +49,7 @@ def not_found(error) -> str:
 
 
 @app.errorhandler(401)
-def not_found(error) -> str:
+def unauthorized(error) -> str:
     """Unauthorized error handler"""
     return jsonify({"error": "Unauthorized"}), 401
 
