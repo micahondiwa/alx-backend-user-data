@@ -25,7 +25,8 @@ class BasicAuth(Auth):
                 return None
             pattern = r"Basic (?P<token>.+)"
             if re.fullmatch(pattern, authorization_header.strip()):
-                return re.fullmatch(pattern, authorization_header.strip()).group(
+                return re.fullmatch(pattern, authorization_header
+                                    .strip()).group(
                     "token"
                 )
             return None
@@ -60,7 +61,8 @@ class BasicAuth(Auth):
                 return None, None
             if ":" in decoded_base64_authorization_header:
                 email = decoded_base64_authorization_header.split(":")[0]
-                password = decoded_base64_authorization_header[len(email) + 1 :]
+                password = decoded_base64_authorization_header
+                [len(email) + 1:]
                 return email, password
             return None, None
         return None, None
@@ -72,7 +74,7 @@ class BasicAuth(Auth):
         Return:
             - User instance based on his email and password
         """
-        if type(user_email) == str and type(user_pwd) is str:
+        if type(user_email) is str and type(user_pwd) is str:
             try:
                 users = User.search({"email": user_email})
                 if not users or users == []:
