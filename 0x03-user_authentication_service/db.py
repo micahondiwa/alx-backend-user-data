@@ -27,8 +27,8 @@ class DB:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
         return self.__session
-    
-    def add_user(self, email: str, hashed_password: str) ->:
+
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
         Adds a new user to the db
         Args:
@@ -41,3 +41,20 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
+
+    def find_user_by(self, **kargs) -> User:
+        """
+        Finds a user by the given criteria
+        Args:
+        **kargs: The search criteria
+        Returns:
+        User: The user found
+        """
+        all_users = self.session.query(User)
+        for k, v in kargs.items():
+            if k not in User.__dict__:
+                raise InvalidRequestError
+            for user in all_users:
+                if getattr(user, k) == v:
+                    return user
+        return NoResultFound
