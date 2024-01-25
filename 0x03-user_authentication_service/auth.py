@@ -52,7 +52,8 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """
-        Validates a user's login credentials and return True if they are correct
+        Validates a user's login credentials and
+        return True if they are correct
         or False if they are not
         Args:
             email (str): user's email address
