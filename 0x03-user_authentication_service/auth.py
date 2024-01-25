@@ -16,25 +16,26 @@ def _hash_password(password: str) -> bytes:
     Args:
         password (str): password in string format
     """
-    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 
 def _generate_uuid() -> str:
     """
-    Generates  uuid and return its string representation
+    Generate a uuid and return its string representation
     """
     return str(uuid4())
 
 
 class Auth:
-    """Interacts with the authentication database."""
+    """Auth class to interact with the authentication database.
+    """
 
     def __init__(self):
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
         """
-        Registers a new user and return a user object
+        Register a new user and return a user object
         Args:
             email (str): new user's email address
             password (str): new user's password
@@ -48,11 +49,11 @@ class Auth:
             password = _hash_password(password)
             user = self._db.add_user(email, password)
             return user
-        raise ValueError(f"User {email} already exists")
+        raise ValueError(f'User {email} already exists')
 
     def valid_login(self, email: str, password: str) -> bool:
         """
-        Validates a user's login credentials and return True if they are correct
+        Validate a user's login credentials and return True if they are correct
         or False if they are not
         Args:
             email (str): user's email address
@@ -64,11 +65,11 @@ class Auth:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
             return False
-        return bcrypt.checkpw(password.encode("utf-8"), user.hashed_password)
+        return bcrypt.checkpw(password.encode('utf-8'), user.hashed_password)
 
     def create_session(self, email: str) -> Union[str, None]:
         """
-        Creates a session_id for an existing user and update the user's
+        Create a session_id for an existing user and update the user's
         session_id attribute
         Args:
             email (str): user's email address
@@ -102,7 +103,7 @@ class Auth:
 
     def destroy_session(self, user_id: int) -> None:
         """
-        Takes a user_id and destroy that user's session and update their
+        Take a user_id and destroy that user's session and update their
         session_id attribute to None
         Args:
             user_id (int): user's id
