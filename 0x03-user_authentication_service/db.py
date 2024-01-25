@@ -5,8 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
-from user import Base
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
+from user import Base, User
 
 
 class DB:
@@ -26,3 +27,17 @@ class DB:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
         return self.__session
+    
+    def add_user(self, email: str, hashed_password: str) ->:
+        """
+        Adds a new user to the db
+        Args:
+        email(str): The email address of the user
+        hashed_password(str): User password
+        Returns:
+        user: Newly created user
+        """
+        new_user = User(email=email, hashed_password=hashed_password)
+        self._session.add(new_user)
+        self._session.commit()
+        return new_user
