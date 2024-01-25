@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"User model"
+"""
+User model
+"""
 
 import sqlalchemy.orm as so
 import sqlalchemy as sa
