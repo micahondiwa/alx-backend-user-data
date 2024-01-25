@@ -3,14 +3,21 @@
 User model
 """
 
-import sqlalchemy.orm as so
-import sqlalchemy as sa
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 
-class User:
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    email: so.Mapped[str] = so.mapped_column(sa.String(250), index=True, Unique=True)
-    hashed_password: so.Mapped[optional[str]] = so.mapped_column(sa.String(250))
-    session_id: so.Mapped[str] = so.mapped_column(sa.str(250))
-    reset_token: so.Mapped[str] = so.mapped_column(sa.str(250))
+class User(Base):
+    """
+    Class User definition.
+    """
+
+    __tablename__ = "users"
+
+    id = Column(primary_key=True)
+    email = Column(String(250), nullable=False)
+    hashed_password = Column(String(250), nullable=False)
+    session_id = Column(string(250))
+    reset_token = Column(String(250))
